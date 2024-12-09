@@ -9,7 +9,7 @@
 <a name="overview"></a>
 ## 1. Overview
 
-Creates a polling based grid using JS package: https://www.ag-grid.com/
+Creates a polling based datatable grid using JS package: https://www.ag-grid.com/
 
 <a name="run"></a>
 ## 2. How to run
