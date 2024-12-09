@@ -58,7 +58,7 @@ In order to change between `community` or `enterprise` distribution or change pa
 <a name="todo"></a>
 ## 5. TODO
 
-- Move Pagination from FE to Server Side
+- Move Pagination from FE to server side
 - Place the option of a horizontal scroll bar
 - Create the option of custom render function per cell
 
