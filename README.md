@@ -60,5 +60,5 @@ In order to change between `community` or `enterprise` distribution or change pa
 
 - Move Pagination from FE to Server Side
 - Place the option of a horizontal scroll bar
-- Create the opion of custom render function per cell
+- Create the option of custom render function per cell
 
