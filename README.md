@@ -16,20 +16,25 @@ Creates a polling based datatable grid using JS package: https://www.ag-grid.com
 
 Replace under `assets/js/index.js` the GET endpoint from which the JSON data are retrieved.
 ```
+// Endpoint const
 const endpoint = 'http://localhost:8090/data';
 ```
+Also the polling interval update in milliseconds:
+```
+// Interval update in milliseconds
+const pollingInterval = 3 * 1000;
+```
 
-As requirement, the endpoint should return a JSON array. Example:
+As <u>requirement</u>, the endpoint should return a JSON array. Example:
 ```
 { "id": 1, "name": "Alice", "age": 25 },
 { "id": 2, "name": "Bob", "age": 30 },
 { "id": 3, "name": "Charlie", "age": 35 }
 ```
 
-Enhance your `.html` file with the script:
-```
-<script src="/js/index.js"></script>
-```
+Set the desired `HTTP_PORT=8090` from `.env` file.
+
+<u>**Now run**</u> `make build run`
 
 <a name="configuration"></a>
 ## 3. How to configure the grid

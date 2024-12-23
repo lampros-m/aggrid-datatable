@@ -1,0 +1,8 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#472d3c",
+        "statusBar.background": "#472d3c",
+        "statusBarItem.remoteBackground": "#472d3c",
+    },
+    "explorer.compactFolders": false,
+}
