@@ -10,6 +10,7 @@ import (
 
 type DataInterface interface {
 	GetAll(c echo.Context) error
+	MockData(c echo.Context) error
 }
 
 type Data struct {
@@ -28,6 +29,18 @@ func (o *Data) GetAll(echoContext echo.Context) error {
 	ctx := echoContext.Request().Context()
 
 	response, err := o.DataService.GetAll(ctx)
+	if err != nil {
+		log.Println(err)
+		return echo.ErrInternalServerError
+	}
+
+	return echoContext.JSON(http.StatusOK, response)
+}
+
+func (o *Data) MockData(echoContext echo.Context) error {
+	ctx := echoContext.Request().Context()
+
+	response, err := o.DataService.MockData(ctx)
 	if err != nil {
 		log.Println(err)
 		return echo.ErrInternalServerError
