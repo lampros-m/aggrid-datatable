@@ -11,12 +11,6 @@ const gridOptions = {
         // Columns filtering
         filter: true,
     },
-    // If catch a significant value, mark red the whole row
-    getRowStyle: params => {
-        if (params.data.logIndex > 40) {
-            return { background: 'red' };
-        }
-    },
     // Pagination
     pagination: true,
     rowSelection: { mode: "multiRow", headerCheckbox: false }
@@ -32,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initial fetch
     fetchDataAndUpdateGrid();
 
-    // Set interval for polling
+    // Set interval for polling    
+    refreshContinuously();
     setInterval(fetchDataAndUpdateGrid, pollingInterval);
 });
 
@@ -46,48 +41,35 @@ const fetchDataAndUpdateGrid = () => {
                 return;
             }
 
-            function convert(sourceData) {
-                const convertedData = {};
-                for (const column of schema) {
-                    let current = sourceData;
-                    for (const part of column.data.split('.')) {
-                        current = current?.[part];
-                    }
-                    convertedData[column.title] = column.customRender 
-                        ? column.customRender(current) 
-                        : current;
-                }
-                return convertedData;
-            }
+            if (!schema) {
 
-            if (schema) data = data.map(convert);            
-
-            // Collect all unique keys from the data, excluding the predefined ones
-            const existingFields = gridOptions.columnDefs?.map(def => def.field) ?? [];
-
-            const newKeys = new Set();
-            data.forEach(item => {
-                Object.keys(item).forEach(key => {
-                    if (!existingFields.includes(key)) {
-                        newKeys.add(key);
-                    }
+                // Get all existing fields from all rows
+                const newKeys = new Set();
+                data.forEach(item => {
+                    Object.keys(item).forEach(key => {
+                        if (!existingFields.includes(key)) {
+                            newKeys.add(key);
+                        }
+                    });
                 });
-            });
 
-            // Create additional column definitions for new keys
-            const newColumnDefs = Array.from(newKeys).map(key => ({
-                field: key,
-            }));
+                // Create additional column definitions for new keys
+                const newColumnDefs = Array.from(newKeys).map(key => ({
+                    field: key,
+                }));
 
-            // Update gridOptions with new column definitions
-            gridOptions.columnDefs = [
-                ...(gridOptions.columnDefs ?? []), // Predefined columns
-                ...newColumnDefs // Dynamically added columns
-            ];
+                // Sort the columns alphabetically
+                const sortedColumnDefs = newColumnDefs.sort(
+                    (a, b) => a.field.localeCompare(b.field));
 
-            // Sort the columns alphabetically
-            const sortedColumnDefs = gridOptions.columnDefs.sort((a, b) => a.field.localeCompare(b.field));
-            gridOptions.columnDefs = sortedColumnDefs;
+                // Update gridOptions with new column definitions
+                gridOptions.columnDefs = sortedColumnDefs;              
+            }
+            else {
+
+                // Simply use whatever our user gave us without any changes
+                gridOptions.columnDefs = schema.columnDefs;
+            }
 
             // Update the grid data
             gridOptions.rowData = data;
