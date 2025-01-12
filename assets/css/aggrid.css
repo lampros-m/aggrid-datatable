@@ -25,21 +25,7 @@ body {
     background-color: transparent;
 }
 
-/* Integers condition styling */
-.int-negative {
-    text-align: center;
-    font-weight: bold;
-    background-color: #f44336;
-}
-
-.int-positive {
-    text-align: center;
-    font-weight: bold;
-    background-color: #4caf50;
-}
-
-.int-zero {
-    text-align: center;
-    font-weight: bold;
-    background-color: #6666f5;
+/* Custom condition styling */
+.int-high {
+    background: #f44336;
 }

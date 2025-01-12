@@ -20,7 +20,12 @@
       "amount1": "1443.952955",
       "sqrtPriceX96": "0x03fee7e03bd3651ee3a500",
       "liquidity": "0x0575c697f6d5b44e",
-      "tick": -194113
+      "tick": -194113,
+      "extraData": {
+        "attribute1": "value1",
+        "attribute2": "value2",
+        "attribute3": "value3"
+      }
     },
     {
       "chain": "bitcoin",
@@ -43,7 +48,12 @@
       "amount1": "1625.0",
       "sqrtPriceX96": "0x03fef99b37d8494831ee39",
       "liquidity": "0x0575c697f6d5b44e",
-      "tick": -194111
+      "tick": -194111,
+      "extraData": {
+        "attribute1": "value2",
+        "attribute2": "value6",
+        "attribute3": "value7"
+      }
     },
     {
       "chain": "bitcoin",
@@ -66,7 +76,12 @@
       "amount1": "387.809486",
       "sqrtPriceX96": "0x03fefdd674b08464021400",
       "liquidity": "0x0575c697f6d5b44e",
-      "tick": -194111
+      "tick": -194111,
+      "extraData": {
+        "attribute1": "value1",
+        "attribute2": "value2",
+        "attribute3": "value3"
+      }
     },
     {
       "chain": "bitcoin",

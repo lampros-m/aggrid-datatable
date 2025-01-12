@@ -5,19 +5,25 @@ const gridOptions = {
     defaultColDef: {
         flex: 1,
         columnChooserParams: {
-            suppressSyncLayoutWithGrid: true, // Prevent the layout from updating when columns are rearranged
+            // Prevent the layout from updating when columns are rearranged
+            suppressSyncLayoutWithGrid: true,
         },
-        filter: true, // Columns filtering
+        // Columns filtering
+        filter: true,
     },
-    pagination: true, // Pagination
+    // If catch a significant value, mark red the whole row
+    getRowStyle: params => {
+        if (params.data.logIndex > 40) {
+            return { background: 'red' };
+        }
+    },
+    // Pagination
+    pagination: true,
     rowSelection: { mode: "multiRow", headerCheckbox: false },
-};
-
-// Cell class rules
-const cellClassRules = {
-    "int-positive": params => Number.isInteger(params.value) && params.value > 0,
-    "int-negative": params => Number.isInteger(params.value) && params.value < 0,
-    "int-zero": params => Number.isInteger(params.value) && params.value === 0,    
+    // These are the predefined columns
+    columnDefs: [
+        { field: "JohnDoe" },
+    ]
 };
 
 // Interval update in milliseconds
@@ -44,22 +50,43 @@ const fetchDataAndUpdateGrid = () => {
                 return;
             }
 
-            // Collect all unique keys from the data to ensure all columns are covered
-            const allKeys = new Set();
+            // Custom populate the predifined columns with the data
             data.forEach(item => {
-                Object.keys(item).forEach(key => allKeys.add(key));
+                if (item.extraData && item.extraData.attribute1) {
+                    item.JohnDoe = item.extraData.attribute1;
+                } else {
+                    item.JohnDoe = null;
+                }
             });
 
-            // Create column definitions from the keys
-            const columnDefs = Array.from(allKeys).map(key => ({ field: key }));
+            // Collect all unique keys from the data, excluding the predefined ones
+            const existingFields = gridOptions.columnDefs.map(def => def.field);
 
-            // Apply format rules to columns
-            columnDefs.forEach((colDef) => {
-                colDef.cellClassRules = cellClassRules
+            const newKeys = new Set();
+            data.forEach(item => {
+                Object.keys(item).forEach(key => {
+                    if (!existingFields.includes(key)) {
+                        newKeys.add(key);
+                    }
+                });
             });
 
-            // Update the grid options with the data and column definitions
-            gridOptions.columnDefs = columnDefs;
+            // Create additional column definitions for new keys
+            const newColumnDefs = Array.from(newKeys).map(key => ({
+                field: key,
+            }));
+
+            // Update gridOptions with new column definitions
+            gridOptions.columnDefs = [
+                ...gridOptions.columnDefs, // Predefined columns
+                ...newColumnDefs // Dynamically added columns
+            ];
+
+            // Sort the columns alphabetically
+            const sortedColumnDefs = gridOptions.columnDefs.sort((a, b) => a.field.localeCompare(b.field));
+            gridOptions.columnDefs = sortedColumnDefs;
+
+            // Update the grid data
             gridOptions.rowData = data;
 
             // Create the grid
