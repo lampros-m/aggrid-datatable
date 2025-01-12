@@ -2,6 +2,7 @@ let gridApi;
 
 // Grid options
 const gridOptions = {
+    initialState: initialState,
     defaultColDef: {
         flex: 1,
         columnChooserParams: {
@@ -33,6 +34,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+function saveState() {
+
+    console.log(gridApi.getState());
+}
+
 async function fetchDataAndUpdateGrid() {
 
     try {
@@ -46,39 +52,6 @@ async function fetchDataAndUpdateGrid() {
             return;
         }
 
-        if (!schema) {
-
-            // Get all existing fields from all rows
-            const newKeys = new Set();
-            data.forEach(item => {
-                Object.keys(item).forEach(key => {
-                    if (!existingFields.includes(key)) {
-                        newKeys.add(key);
-                    }
-                });
-            });
-
-            // Create additional column definitions for new keys
-            const newColumnDefs = Array.from(newKeys).map(key => ({
-                field: key,
-            }));
-
-            // Sort the columns alphabetically
-            const sortedColumnDefs = newColumnDefs.sort(
-                (a, b) => a.field.localeCompare(b.field));
-
-            // Update gridOptions with new column definitions
-            gridOptions.columnDefs = sortedColumnDefs;              
-        }
-        else {
-
-            // Simply use whatever our user gave us without any changes
-            gridOptions.columnDefs = schema.columnDefs;
-        }
-
-        // Update the grid data
-        gridOptions.rowData = data;
-
         // Create the grid
         var gridDiv = document.querySelector("#myGrid");
 
@@ -86,6 +59,40 @@ async function fetchDataAndUpdateGrid() {
         if (gridApi) {
             gridApi.setGridOption('rowData', data);
         } else {
+
+            if (!schema) {
+
+                // Get all existing fields from all rows
+                const newKeys = new Set();
+                data.forEach(item => {
+                    Object.keys(item).forEach(key => {
+                        if (!existingFields.includes(key)) {
+                            newKeys.add(key);
+                        }
+                    });
+                });
+    
+                // Create additional column definitions for new keys
+                const newColumnDefs = Array.from(newKeys).map(key => ({
+                    field: key,
+                }));
+    
+                // Sort the columns alphabetically
+                const sortedColumnDefs = newColumnDefs.sort(
+                    (a, b) => a.field.localeCompare(b.field));
+    
+                // Update gridOptions with new column definitions
+                gridOptions.columnDefs = sortedColumnDefs;              
+            }
+            else {
+    
+                // Simply use whatever our user gave us without any changes
+                gridOptions.columnDefs = schema.columnDefs;
+            }
+    
+            // Update the grid data
+            gridOptions.rowData = data;
+
             gridApi = agGrid.createGrid(gridDiv, gridOptions);
         }
     }
