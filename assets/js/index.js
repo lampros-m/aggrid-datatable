@@ -19,11 +19,7 @@ const gridOptions = {
     },
     // Pagination
     pagination: true,
-    rowSelection: { mode: "multiRow", headerCheckbox: false },
-    // These are the predefined columns
-    columnDefs: [
-        { field: "JohnDoe" },
-    ]
+    rowSelection: { mode: "multiRow", headerCheckbox: false }
 };
 
 // Interval update in milliseconds
@@ -50,17 +46,24 @@ const fetchDataAndUpdateGrid = () => {
                 return;
             }
 
-            // Custom populate the predifined columns with the data
-            data.forEach(item => {
-                if (item.extraData && item.extraData.attribute1) {
-                    item.JohnDoe = item.extraData.attribute1;
-                } else {
-                    item.JohnDoe = null;
+            function convert(sourceData) {
+                const convertedData = {};
+                for (const column of schema) {
+                    let current = sourceData;
+                    for (const part of column.data.split('.')) {
+                        current = current?.[part];
+                    }
+                    convertedData[column.title] = column.customRender 
+                        ? column.customRender(current) 
+                        : current;
                 }
-            });
+                return convertedData;
+            }
+
+            if (schema) data = data.map(convert);            
 
             // Collect all unique keys from the data, excluding the predefined ones
-            const existingFields = gridOptions.columnDefs.map(def => def.field);
+            const existingFields = gridOptions.columnDefs?.map(def => def.field) ?? [];
 
             const newKeys = new Set();
             data.forEach(item => {
@@ -78,7 +81,7 @@ const fetchDataAndUpdateGrid = () => {
 
             // Update gridOptions with new column definitions
             gridOptions.columnDefs = [
-                ...gridOptions.columnDefs, // Predefined columns
+                ...(gridOptions.columnDefs ?? []), // Predefined columns
                 ...newColumnDefs // Dynamically added columns
             ];
 

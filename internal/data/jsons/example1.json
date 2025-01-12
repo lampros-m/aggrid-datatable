@@ -24,7 +24,8 @@
       "extraData": {
         "attribute1": "value1",
         "attribute2": "value2",
-        "attribute3": "value3"
+        "attribute3": "value3",
+        "list": [1, 2, 3]
       }
     },
     {
