@@ -10,8 +10,8 @@ import (
 var instance *Config
 
 type Config struct {
-	HTTP_PORT     string `envconfig:"HTTP_PORT"  required:"true"`
-	DATA_ENDPOINT string `envconfig:"DATA_ENDPOINT" required:"true"`
+	HTTP_PORT      string `envconfig:"HTTP_PORT"  required:"true"`
+	DATA_ENDPOINTS string `envconfig:"DATA_ENDPOINTS" required:"true"`
 }
 
 func load() (*Config, error) {

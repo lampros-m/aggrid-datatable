@@ -14,9 +14,15 @@ Creates a polling based datatable grid using JS package: https://www.ag-grid.com
 <a name="run"></a>
 ## 2. How to run
 
-Set under `.env` file, the environmental variable from which the actual JSON data are retrieved.
+Set in file `dataendpoints.join`, the URLs from where the JSON data are retrieved.
+
+Example:
 ```
-DATA_ENDPOINT=http://localhost:8090/mockdata
+{
+    "1": "http://localhost:8090/mockdataalpha",
+    "2": "http://localhost:8090/mockdatabeta",
+    "3": "http://localhost:8090/mockdatagamma"
+}
 ```
 Set under `.env` file, the environmental variable that indicates the server's port.
 ```
@@ -36,7 +42,9 @@ As <u>REQUIREMENT</u>, the endpoint should return a JSON array. Example:
 ```
 <u>**Run:**</u> `make build run`
 
-Now the grid is available at: `http://localhost:8090/index`
+Now the grids are available using the URLs based on ID accordingly
+
+Example: `http://localhost:8090?id=3`
 
 <a name="configuration"></a>
 ## 3. How to configure the grid
@@ -67,5 +75,7 @@ In order to change between `community` or `enterprise` distribution or change pa
 
 - Move Pagination from FE to server side
 - Place the option of a horizontal scroll bar
-- Create the option of custom render function per cell
+- Custome color and rendering per cell or column etc.
+- Custom schema rendering
+- The user has to save its rendering options
 

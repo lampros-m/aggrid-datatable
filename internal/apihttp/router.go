@@ -21,7 +21,9 @@ func NewRouter(
 func (o *Router) Route(e *echo.Echo) {
 	e.Static("/", "assets")
 
-	e.GET("/data", o.Data.GetAll)
-	e.GET("/mockdata", o.Data.MockData)
+	e.GET("/dataurl/:id", o.Data.GetByUrl)
+	e.GET("/mockdataalpha", o.Data.MockData)
+	e.GET("/mockdatabeta", o.Data.MockData)
+	e.GET("/mockdatagamma", o.Data.MockData)
 	e.GET("/index", func(c echo.Context) error { return c.File("assets/index.html") })
 }

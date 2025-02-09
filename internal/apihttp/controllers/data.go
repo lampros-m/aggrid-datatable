@@ -9,7 +9,7 @@ import (
 )
 
 type DataInterface interface {
-	GetAll(c echo.Context) error
+	GetByUrl(c echo.Context) error
 	MockData(c echo.Context) error
 }
 
@@ -25,10 +25,15 @@ func NewData(
 	}
 }
 
-func (o *Data) GetAll(echoContext echo.Context) error {
+func (o *Data) GetByUrl(echoContext echo.Context) error {
 	ctx := echoContext.Request().Context()
 
-	response, err := o.DataService.GetAll(ctx)
+	urlID := echoContext.Param("id")
+	if urlID == "" {
+		return echo.ErrBadRequest
+	}
+
+	response, err := o.DataService.GetByUrl(ctx, urlID)
 	if err != nil {
 		log.Println(err)
 		return echo.ErrInternalServerError
